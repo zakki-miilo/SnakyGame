@@ -9,6 +9,7 @@ public class SnakePanel extends JPanel implements ActionListener{
     JLabel scoreLabel;
     JPanel top;
     JPanel bot;
+    JLabel popUpMessage;
     StartMenu startMenu;
     Random random;
     static Timer timer;
@@ -26,16 +27,17 @@ public class SnakePanel extends JPanel implements ActionListener{
     static int scores;
     static int ratX;
     static int ratY;
-    static int poisonX;
-    static int poisonY;
-    static int poisonX1 = -1;
-    static int poisonY1 = -1;
-    static int poisonX2 = -1;
-    static int poisonY2 = -1;
-    static int poisonX3 = -1;
-    static int poisonY3 = -1;
+    static int bombX;
+    static int bombY;
+    static int bombX1 = -1;
+    static int bombY1 = -1;
+    static int bombX2 = -1;
+    static int bombY2 = -1;
+    static int bombX3 = -1;
+    static int bombY3 = -1;
     static boolean running = false;
     static boolean isDead;
+    static boolean popUp;
     char direction = 'R';
 
     ImageIcon rat;
@@ -47,12 +49,14 @@ public class SnakePanel extends JPanel implements ActionListener{
     Image bombImg;
     Image bgImg;
     Image headImg;
+    //Testing Idea
     Image leaf1Img;
 
     SnakePanel(SnakeGUI frame, StartMenu startMenu){
         top = new JPanel();
         bot = new JPanel();
         scoreLabel = new JLabel("Score: ");
+        popUpMessage = new JLabel();
         this.frame = frame;
         this.startMenu = startMenu;
 
@@ -89,10 +93,18 @@ public class SnakePanel extends JPanel implements ActionListener{
         super.paintComponent(g);
         g.drawImage(bgImg, 0, 0, this);
         draw(g);
+
     }
     public void draw(Graphics g) {
         if(running) {
+            if(popUp){
+                g.setColor(new Color(236, 200, 69, 255));
+                g.setFont(new Font(null,Font.ITALIC, 30));
+                g.drawString("+200", snakeX[0], snakeY[0]);
+                popUp = false;
+            }
             scores += 100;
+            UI(g);
             drawingRatAndBomb(g);
             snakeBodyColor(g);
         }
@@ -105,18 +117,17 @@ public class SnakePanel extends JPanel implements ActionListener{
     }
 
     public void drawingRatAndBomb(Graphics g){
-        UI(g);
-        g.drawImage(bombImg, poisonX, poisonY, this);
+        g.drawImage(bombImg, bombX, bombY, this);
         g.drawImage(ratImg, ratX, ratY, this);
 
         if(snackEaten >= 3){
-            g.drawImage(bombImg, poisonX1, poisonY1, this);
+            g.drawImage(bombImg, bombX1, bombY1, this);
         }
         if(snackEaten >= 5){
-            g.drawImage(bombImg, poisonX2, poisonY2, this);
+            g.drawImage(bombImg, bombX2, bombY2, this);
         }
         if(snackEaten >= 10){
-            g.drawImage(bombImg, poisonX3, poisonY3, this);
+            g.drawImage(bombImg, bombX3, bombY3, this);
         }
     }
 
@@ -143,25 +154,24 @@ public class SnakePanel extends JPanel implements ActionListener{
     }
 
     public void BombIsHit(Graphics g){
-        if ((snakeX[0] == poisonX) && (snakeY[0] == poisonY) || (snakeX[0] == poisonX1) && (snakeY[0] == poisonY1) || (snakeX[0] == poisonX2) && (snakeY[0] == poisonY2)
-                || (snakeX[0] == poisonX3) && (snakeY[0] == poisonY3)) {
-            running = false;
-            g.setColor(Color.black);
-            isDead = true;
-            g.dispose();
+        if ((snakeX[0] == bombX) && (snakeY[0] == bombY) || (snakeX[0] == bombX1) && (snakeY[0] == bombY1) || (snakeX[0] == bombX2) && (snakeY[0] == bombY2)
+                || (snakeX[0] == bombX3) && (snakeY[0] == bombY3)) {
+                running = false;
+                g.setColor(Color.black);
+                isDead = true;
+                g.dispose();
         }
     }
 
     public void UI(Graphics g){
         g.setColor(new Color(204, 6, 6, 74));
-        g.setFont( new Font("Ink Free",Font.BOLD, 37));
+        g.setFont( new Font(null,Font.BOLD, 37));
         FontMetrics metrics = getFontMetrics(g.getFont());
         g.drawString("RATS: "+ snackEaten, (WINDOW_WIDTH - metrics.stringWidth("RATS: "+ snackEaten)), g.getFont().getSize());
 
         g.setColor(new Color(1, 141, 166, 87));
-        g.setFont( new Font("Ink Free",Font.BOLD, 37));
-        FontMetrics metrics1 = getFontMetrics(g.getFont());
-        g.drawString("SCORES: "+ scores, (WINDOW_WIDTH - metrics1.stringWidth("SCORES: "+ scores))/80, g.getFont().getSize());
+        g.setFont( new Font(null,Font.BOLD, 37));
+        g.drawString("SCORES: "+ scores, (WINDOW_WIDTH - metrics.stringWidth("SCORES: "+ scores))/80, g.getFont().getSize());
     }
 
     public void move() {
@@ -184,17 +194,18 @@ public class SnakePanel extends JPanel implements ActionListener{
                 snakeX[0] = snakeX[0] + SIZE_OF_BLOCK;
                 break;
         }
+
     }
 
     public void resetGame(){
         isDead = false;
         running = false;
-        poisonX1 = -1;
-        poisonY1 = -1;
-        poisonX2 = -1;
-        poisonY2 = -1;
-        poisonX3 = -1;
-        poisonY3 = -1;
+        bombX1 = -1;
+        bombY1 = -1;
+        bombX2 = -1;
+        bombY2 = -1;
+        bombX3 = -1;
+        bombY3 = -1;
         bodyParts = 3;
         snackEaten = 0;
         direction = 'R';

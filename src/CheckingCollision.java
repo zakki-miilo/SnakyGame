@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.Random;
 
 public class CheckingCollision extends SnakePanel{
@@ -8,24 +9,38 @@ public class CheckingCollision extends SnakePanel{
     }
 
     public static void positionOfItems() {
-        poisonX = random.nextInt(WINDOW_WIDTH / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
-        poisonY = random.nextInt(WINDOW_WIDTH / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
+        bombX = random.nextInt(WINDOW_WIDTH / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
+        bombY = random.nextInt(WINDOW_WIDTH / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
 
-        ratX = random.nextInt(WINDOW_WIDTH / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
-        ratY = random.nextInt(WINDOW_HEIGHT / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
+        if (snackEaten >= 3) {
+            bombX1 = random.nextInt(WINDOW_WIDTH / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
+            bombY1 = random.nextInt(WINDOW_WIDTH / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
+        }
+        if (snackEaten >= 5) {
+            bombY2 = random.nextInt(WINDOW_WIDTH / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
+            bombX3 = random.nextInt(WINDOW_WIDTH / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
+        }
+        if (snackEaten >= 10) {
+            bombX2 = random.nextInt(WINDOW_WIDTH / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
+            bombY3 = random.nextInt(WINDOW_WIDTH / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
+        }
 
-        if(snackEaten >= 3){
-            poisonX1 = random.nextInt(WINDOW_WIDTH / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
-            poisonY1 = random.nextInt(WINDOW_WIDTH / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
+    ratX = random.nextInt(WINDOW_WIDTH / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
+    ratY = random.nextInt(WINDOW_HEIGHT / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
+
+    checkRatAndBombPosition(bombX, bombY);
+    checkRatAndBombPosition(bombX1, bombY1);
+    checkRatAndBombPosition(bombX2, bombY2);
+    checkRatAndBombPosition(bombX3, bombY3);
+
+    }
+
+    public static void checkRatAndBombPosition(int bombPositionX, int bombPositionY){
+        if(ratX == bombPositionX && ratY == bombPositionY){
+            ratX = random.nextInt(WINDOW_WIDTH / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
+            ratY = random.nextInt(WINDOW_HEIGHT / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
         }
-        if(snackEaten >= 5){
-            poisonY2 = random.nextInt(WINDOW_WIDTH / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
-            poisonX3 = random.nextInt(WINDOW_WIDTH / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
-        }
-        if(snackEaten >= 10){
-            poisonX2 = random.nextInt(WINDOW_WIDTH / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
-            poisonY3 = random.nextInt(WINDOW_WIDTH / SIZE_OF_BLOCK) * SIZE_OF_BLOCK;
-        }
+
     }
 
     public static void checkTheRat() {
@@ -33,35 +48,35 @@ public class CheckingCollision extends SnakePanel{
             bodyParts++;
             snackEaten++;
             scores += 200;
+            popUp = true;
             positionOfItems();
         }
+    }
+
+    public static void dying(){
+        running = false;
+        isDead = true;
     }
 
     public static void checkCollisions() {
         for (int i = bodyParts; i > 0; i--) {
             if ((snakeX[0] == snakeX[i]) && (snakeY[0] == snakeY[i])) {
-                running = false;
-                isDead = true;
+                dying();
                 break;
             }
         }
         if (snakeX[0] < 0) {
-            running = false;
-            isDead = true;
+            dying();
         }
         if (snakeX[0] > WINDOW_WIDTH) {
-            running = false;
-            isDead = true;
+            dying();
         }
         if (snakeY[0] < 0) {
-            running = false;
-            isDead = true;
+            dying();
         }
         if (snakeY[0] > WINDOW_HEIGHT) {
-            running = false;
-            isDead = true;
+            dying();
         }
-
         if (!running) {
             timer.stop();
         }
