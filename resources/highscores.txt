@@ -1,5 +1,5 @@
-Zac 10700 
+Moo 11700 
 Zac 17400 
 Vi 19400 
-New_Player 22100 
+New_Player 24100 
 New_Player 34700 

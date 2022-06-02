@@ -7,7 +7,6 @@ public class SnakeGUI extends JFrame {
         this.menu = menu;
         this.add(new SnakePanel(this, menu));
         this.setTitle("90's Snake");
-
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.pack();
