@@ -1,0 +1,5 @@
+Zac 10700 
+Zac 17400 
+Vi 19400 
+New_Player 22100 
+New_Player 34700 
