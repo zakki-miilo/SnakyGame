@@ -17,7 +17,7 @@ public class SnakePanel extends JPanel implements ActionListener{
     static final int WINDOW_WIDTH = 900;
     static final int WINDOW_HEIGHT = 600;
     static final int SIZE_OF_BLOCK = 30;
-    static final int DELAY = 160;
+    static final int DELAY = 150;
     static final int FIELD_SIZE = ((WINDOW_WIDTH * WINDOW_HEIGHT)/(SIZE_OF_BLOCK * SIZE_OF_BLOCK));
     static final int[] snakeX = new int[FIELD_SIZE];
     static final int[] snakeY = new int[FIELD_SIZE];
@@ -38,6 +38,8 @@ public class SnakePanel extends JPanel implements ActionListener{
     static boolean running = false;
     static boolean isDead;
     static boolean popUp;
+    static int snakeLive = 3;
+    static boolean isHit;
     char direction = 'R';
 
     ImageIcon rat;
@@ -45,10 +47,12 @@ public class SnakePanel extends JPanel implements ActionListener{
     ImageIcon bg;
     ImageIcon head;
     ImageIcon leaf1;
+    ImageIcon heart;
     Image ratImg;
     Image bombImg;
     Image bgImg;
     Image headImg;
+    Image heartImg;
     //Testing Idea
     Image leaf1Img;
 
@@ -65,6 +69,7 @@ public class SnakePanel extends JPanel implements ActionListener{
         bg = new ImageIcon("./resources/bg.png");
         head = new ImageIcon("./resources/head.png");
         leaf1 = new ImageIcon("./resources/leaf1.png");
+        heart = new ImageIcon("./resources/heart.png");
         random = new Random();
 
         ratImg = rat.getImage();
@@ -72,6 +77,7 @@ public class SnakePanel extends JPanel implements ActionListener{
         headImg = head.getImage();
         bgImg = bg.getImage();
         leaf1Img = leaf1.getImage();
+        heartImg = heart.getImage();
 
         this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         this.setBackground(new Color(144, 212, 114));
@@ -97,6 +103,7 @@ public class SnakePanel extends JPanel implements ActionListener{
     }
     public void draw(Graphics g) {
         if(running) {
+
             if(popUp){
                 g.setColor(new Color(236, 200, 69, 255));
                 g.setFont(new Font(null,Font.ITALIC, 30));
@@ -150,16 +157,41 @@ public class SnakePanel extends JPanel implements ActionListener{
             g.fillRect(snakeX[i], snakeY[i], SIZE_OF_BLOCK, SIZE_OF_BLOCK);
             g.setColor(Color.black);
             g.drawRect(snakeX[i], snakeY[i], SIZE_OF_BLOCK, SIZE_OF_BLOCK);
+            if(isHit){
+                try {
+                    g.setColor(Color.red);
+                    g.fillRect(snakeX[i], snakeY[i], SIZE_OF_BLOCK, SIZE_OF_BLOCK);
+                    Thread.sleep(100);
+                }catch (Exception Ex){
+                    System.out.println("Oh no....");
+                }
+                isHit = false;
+            }
         }
     }
 
     public void BombIsHit(Graphics g){
+        if(snakeLive == 3){
+            g.drawImage(heartImg, 400, 10, this);
+            g.drawImage(heartImg, 450, 10, this);
+            g.drawImage(heartImg, 500, 10, this);
+        } else if(snakeLive == 2) {
+            g.drawImage(heartImg, 400, 10, this);
+            g.drawImage(heartImg, 450, 10, this);
+        }else if(snakeLive == 1){
+            g.drawImage(heartImg, 400, 10, this);
+        }
         if ((snakeX[0] == bombX) && (snakeY[0] == bombY) || (snakeX[0] == bombX1) && (snakeY[0] == bombY1) || (snakeX[0] == bombX2) && (snakeY[0] == bombY2)
                 || (snakeX[0] == bombX3) && (snakeY[0] == bombY3)) {
-                running = false;
-                g.setColor(Color.black);
-                isDead = true;
-                g.dispose();
+                snakeLive--;
+                isHit = true;
+                CheckingCollision.positionOfItems();
+        }
+        if(snakeLive == 0){
+            running = false;
+            g.setColor(Color.black);
+            isDead = true;
+            g.dispose();
         }
     }
 
@@ -200,6 +232,7 @@ public class SnakePanel extends JPanel implements ActionListener{
     public void resetGame(){
         isDead = false;
         running = false;
+        snakeLive = 3;
         bombX1 = -1;
         bombY1 = -1;
         bombX2 = -1;
@@ -227,6 +260,7 @@ public class SnakePanel extends JPanel implements ActionListener{
                 frame.dispose();
                 snakeX[0] = 0;
                 snakeY[0] = 0;
+                isHit = false;
                 new GameOverMenu(startMenu);
                 resetGame();
 
