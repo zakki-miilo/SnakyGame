@@ -1,5 +1,5 @@
-aye 340 
-Ne 3000 
-New 5150 
-lar 6030 
-New_Player 24000 
+Olli 340 
+Amy 3000 
+Bob 5150 
+King 18500 
+Cat 26800 

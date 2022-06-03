@@ -44,23 +44,18 @@ public class SnakePanel extends JPanel implements ActionListener{
     static boolean isHit;
     char direction = 'R';
 
-    //int xVelocity = 1;
-    //int yVelocity = 1;
     int heartY = 15;
 
     ImageIcon rat;
     ImageIcon bomb;
     ImageIcon bg;
     ImageIcon head;
-    ImageIcon leaf1;
     ImageIcon heart;
     Image ratImg;
     Image bombImg;
     Image bgImg;
     Image headImg;
     Image heartImg;
-    //Testing Idea
-    Image leaf1Img;
 
     SnakePanel(SnakeGUI frame, StartMenu startMenu){
         top = new JPanel();
@@ -74,7 +69,6 @@ public class SnakePanel extends JPanel implements ActionListener{
         bomb = new ImageIcon("./resources/bomb.png");
         bg = new ImageIcon("./resources/bg.png");
         head = new ImageIcon("./resources/head.png");
-        leaf1 = new ImageIcon("./resources/leaf1.png");
         heart = new ImageIcon("./resources/heart.png");
         random = new Random();
 
@@ -82,7 +76,6 @@ public class SnakePanel extends JPanel implements ActionListener{
         bombImg = bomb.getImage();
         headImg = head.getImage();
         bgImg = bg.getImage();
-        leaf1Img = leaf1.getImage();
         heartImg = heart.getImage();
 
         this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));

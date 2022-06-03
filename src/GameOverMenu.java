@@ -131,13 +131,8 @@ public class GameOverMenu implements ActionListener {
     }
 
     public void addToScoreList(){
-        System.out.println("checking the scoreboard array");
-
         for (int i = 0; i < 5; i++){
             scoreboard.add(new Score(menu.playerNames.get(i),menu.playerScores.get(i)));
-        }
-        for(int i= 0; i < 5; i++){
-            System.out.println(scoreboard.get(i) + " ");
         }
     }
 
