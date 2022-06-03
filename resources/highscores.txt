@@ -1,5 +1,5 @@
-New_Player 25500 
-New_Player 28700 
-New_Player 51500 
-New_Player 60300 
-Lee 69200 
+aye 340 
+Ne 3000 
+New 5150 
+lar 6030 
+New_Player 24000 

@@ -27,6 +27,7 @@ public class SnakePanel extends JPanel implements ActionListener{
     static int scores;
     static int ratX;
     static int ratY;
+
     static int bombX;
     static int bombY;
     static int bombX1 = -1;
@@ -35,12 +36,17 @@ public class SnakePanel extends JPanel implements ActionListener{
     static int bombY2 = -1;
     static int bombX3 = -1;
     static int bombY3 = -1;
+
     static boolean running = false;
     static boolean isDead;
     static boolean popUp;
     static int snakeLive = 3;
     static boolean isHit;
     char direction = 'R';
+
+    //int xVelocity = 1;
+    //int yVelocity = 1;
+    int heartY = 15;
 
     ImageIcon rat;
     ImageIcon bomb;
@@ -103,7 +109,6 @@ public class SnakePanel extends JPanel implements ActionListener{
     }
     public void draw(Graphics g) {
         if(running) {
-
             if(popUp){
                 g.setColor(new Color(236, 200, 69, 255));
                 g.setFont(new Font(null,Font.ITALIC, 30));
@@ -161,7 +166,6 @@ public class SnakePanel extends JPanel implements ActionListener{
                 try {
                     g.setColor(Color.red);
                     g.fillRect(snakeX[i], snakeY[i], SIZE_OF_BLOCK, SIZE_OF_BLOCK);
-                    Thread.sleep(100);
                 }catch (Exception Ex){
                     System.out.println("Oh no....");
                 }
@@ -172,26 +176,33 @@ public class SnakePanel extends JPanel implements ActionListener{
 
     public void BombIsHit(Graphics g){
         if(snakeLive == 3){
-            g.drawImage(heartImg, 400, 10, this);
-            g.drawImage(heartImg, 450, 10, this);
-            g.drawImage(heartImg, 500, 10, this);
+            g.drawImage(heartImg, 370, heartY, this);
+            g.drawImage(heartImg, 420, heartY, this);
+            g.drawImage(heartImg, 470, heartY, this);
         } else if(snakeLive == 2) {
-            g.drawImage(heartImg, 400, 10, this);
-            g.drawImage(heartImg, 450, 10, this);
+            g.drawImage(heartImg, 400, heartY, this);
+            g.drawImage(heartImg, 450, heartY, this);
         }else if(snakeLive == 1){
-            g.drawImage(heartImg, 400, 10, this);
+            g.drawImage(heartImg, 400, heartY, this);
         }
-        if ((snakeX[0] == bombX) && (snakeY[0] == bombY) || (snakeX[0] == bombX1) && (snakeY[0] == bombY1) || (snakeX[0] == bombX2) && (snakeY[0] == bombY2)
-                || (snakeX[0] == bombX3) && (snakeY[0] == bombY3)) {
-                snakeLive--;
-                isHit = true;
-                CheckingCollision.positionOfItems();
-        }
+        theBomb(bombX, bombY);
+        theBomb(bombX1, bombY1);
+        theBomb(bombX2, bombY2);
+        theBomb(bombX3, bombY3);
+
         if(snakeLive == 0){
             running = false;
             g.setColor(Color.black);
             isDead = true;
             g.dispose();
+        }
+    }
+
+    public void theBomb(int bX, int bY){
+        if ((snakeX[0] == bX) && (snakeY[0] == bY)){
+            snakeLive--;
+            isHit = true;
+            CheckingCollision.positionOfItems();
         }
     }
 
@@ -226,7 +237,6 @@ public class SnakePanel extends JPanel implements ActionListener{
                 snakeX[0] = snakeX[0] + SIZE_OF_BLOCK;
                 break;
         }
-
     }
 
     public void resetGame(){
@@ -252,7 +262,6 @@ public class SnakePanel extends JPanel implements ActionListener{
             move();
             CheckingCollision.checkTheRat();
             CheckingCollision.checkCollisions();
-            repaint();
         }
         if(isDead) {
             try{
@@ -268,5 +277,6 @@ public class SnakePanel extends JPanel implements ActionListener{
                 System.out.println("Something is wrong...");
             }
         }
+        repaint();
     }
 }

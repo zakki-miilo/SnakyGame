@@ -13,7 +13,5 @@ public class SnakeGUI extends JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         this.setLocationRelativeTo(null);
-
     }
-
 }
